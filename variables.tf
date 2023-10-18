@@ -1,40 +1,67 @@
 variable "vpc_cidr" {
-    type = string
-    default = "10.10.0.0/16"
+  type = string
+  default = "10.0.0.0/16"
 }
 
 variable "vpc_tags" {
-    type = map
-    default = {
-        Name = "Module-VPC"
-        Environment = "PROD"
-        Terraform = "True"
-    }
+  type = map
+  default = {}
 }
 
 variable "igw_tags" {
-    type = map
-    default = {
-        Name = "Module-IGW"
-        Environment = "PROD"
-        Terraform = "True"
-    }
-}
-
-variable "public_subnet_name" {
-  type = list
-  default = ["subnet-1a", "subnet-1b"]
+  type = map
+  default = {}
 }
 
 variable "public_subnet_cidr" {
   type = list
-  default = ["10.10.1.0/24", "10.10.2.0/24"]
+  description = "Provide 2 public subnet cidr"
+  validation {
+    condition = (
+      length(var.public_subnet_cidr) == 2
+      )
+      error_message = "CIDR list must be 2"
+  }
+}
+
+variable "public_subnet_name" {
+  type = list
+  validation {
+    condition = (
+      length(var.public_subnet_name) == 2
+      )
+      error_message = "Subnet name list must be 2"
+  }
+}
+
+
+variable "private_subnet_cidr" {
+  type = list
+  description = "Provide 2 private subnet cidr"
+  validation {
+    condition = (
+      length(var.private_subnet_cidr) == 2
+      )
+      error_message = "CIDR list must be 2"
+  }
 }
 
 variable "private_subnet_name" {
-  default = ["subnet-1c", "subnet-1d"]
+  type = list
+  validation {
+    condition = (
+      length(var.private_subnet_name) == 2
+      )
+      error_message = "Subnet name list must be 2"
+  }
 }
 
-variable "private_subnet_cidr" {
-  default = ["10.10.3.0/24", "10.10.4.0/24"]
+variable "public_route_table_tags" {
+  type = map
+  default = {}
+}
+
+variable "private_route_table_tags" {
+  type = map
+  default = {}
 }
